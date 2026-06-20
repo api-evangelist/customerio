@@ -1,0 +1,75 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Customer.io
+providerId: customerio
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Customer Messaging
+- Marketing Automation
+- Email
+- CDP
+- Transactional
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Customer.io applies per-endpoint rate limits that differ by API surface. The
+  Track (Behavioral Tracking) API has a fair-use limit of 100 requests per
+  second for both live integrations and historical backfill, applying to v1 and
+  v2. On the App API most requests are limited to 10 requests per second, with
+  API-triggered broadcasts limited to 1 request every 10 seconds and
+  transactional messages allowed up to 100 requests per second. The Pipelines /
+  CDP API enforces payload-size limits of 64 KB per single request and 1 MB per
+  batch request.
+notes: >-
+  Limits captured from Customer.io API reference documentation and are subject
+  to change; verify the current published limits during reconciliation.
+  Exceeding limits returns HTTP 429.
+sources:
+- https://docs.customer.io/integrations/api/track/
+- https://docs.customer.io/integrations/api/app/
+- https://docs.customer.io/integrations/api/cdp/
+responseCodes:
+  throttled: 429
+limits:
+- name: Track API (Behavioral Tracking)
+  scope: account
+  metric: requests
+  limit: 100/second
+  notes: Fair-use limit for live integrations and historical backfill; applies to v1 and v2.
+- name: App API (general)
+  scope: account
+  metric: requests
+  limit: 10/second
+  notes: Default limit for most App API endpoints.
+- name: App API (API-triggered broadcast)
+  scope: account
+  metric: requests
+  limit: 1 per 10 seconds
+  notes: Broadcast trigger endpoint is heavily throttled.
+- name: App API (Transactional)
+  scope: account
+  metric: requests
+  limit: 100/second
+  notes: Transactional email/push/sms/in-app send endpoints.
+- name: Pipelines API (single request)
+  scope: request
+  metric: bytes
+  limit: 64 KB
+  notes: Maximum size of a single identify/track/page/screen/group/alias call.
+- name: Pipelines API (batch request)
+  scope: request
+  metric: bytes
+  limit: 1 MB
+  notes: Maximum size of a batch request.
+policies:
+- name: Per-Endpoint Limits
+  description: Limits are enforced per endpoint category rather than a single global account limit.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on HTTP 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

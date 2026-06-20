@@ -1,0 +1,425 @@
+{
+  "item": [
+    {
+      "name": "Track API - People",
+      "description": { "content": "Track API people endpoints. HTTP Basic auth with site_id:api_key.", "type": "text/plain" },
+      "item": [
+        {
+          "name": "Create or update a person",
+          "request": {
+            "url": { "raw": "{{trackUrl}}/api/v1/customers/:identifier", "host": ["{{trackUrl}}"], "path": ["api", "v1", "customers", ":identifier"], "variable": [{ "key": "identifier", "value": "user@example.com" }] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "PUT",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{siteId}}" }, { "key": "password", "value": "{{apiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"user@example.com\",\n  \"created_at\": 1234567890,\n  \"first_name\": \"Jane\"\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a person",
+          "request": {
+            "url": { "raw": "{{trackUrl}}/api/v1/customers/:identifier", "host": ["{{trackUrl}}"], "path": ["api", "v1", "customers", ":identifier"], "variable": [{ "key": "identifier", "value": "user@example.com" }] },
+            "header": [],
+            "method": "DELETE",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{siteId}}" }, { "key": "password", "value": "{{apiKey}}" }] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Track API - Events",
+      "description": { "content": "Track API event endpoints.", "type": "text/plain" },
+      "item": [
+        {
+          "name": "Track an anonymous event",
+          "request": {
+            "url": { "raw": "{{trackUrl}}/api/v1/events", "host": ["{{trackUrl}}"], "path": ["api", "v1", "events"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{siteId}}" }, { "key": "password", "value": "{{apiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"signup\",\n  \"data\": { \"plan\": \"essentials\" }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        },
+        {
+          "name": "Track a customer event",
+          "request": {
+            "url": { "raw": "{{trackUrl}}/api/v1/customers/:identifier/events", "host": ["{{trackUrl}}"], "path": ["api", "v1", "customers", ":identifier", "events"], "variable": [{ "key": "identifier", "value": "user@example.com" }] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{siteId}}" }, { "key": "password", "value": "{{apiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"purchase\",\n  \"data\": { \"amount\": 99 }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Track API - Devices",
+      "item": [
+        {
+          "name": "Add or update a device",
+          "request": {
+            "url": { "raw": "{{trackUrl}}/api/v1/customers/:identifier/devices", "host": ["{{trackUrl}}"], "path": ["api", "v1", "customers", ":identifier", "devices"], "variable": [{ "key": "identifier", "value": "user@example.com" }] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "PUT",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{siteId}}" }, { "key": "password", "value": "{{apiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"device\": { \"id\": \"device-token\", \"platform\": \"ios\", \"last_used\": 1234567890 }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a device",
+          "request": {
+            "url": { "raw": "{{trackUrl}}/api/v1/customers/:identifier/devices/:device_id", "host": ["{{trackUrl}}"], "path": ["api", "v1", "customers", ":identifier", "devices", ":device_id"], "variable": [{ "key": "identifier", "value": "user@example.com" }, { "key": "device_id", "value": "device-token" }] },
+            "header": [],
+            "method": "DELETE",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{siteId}}" }, { "key": "password", "value": "{{apiKey}}" }] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Track API - Segments",
+      "item": [
+        {
+          "name": "Add people to a manual segment",
+          "request": {
+            "url": { "raw": "{{trackUrl}}/api/v1/segments/:segment_id/add_customers", "host": ["{{trackUrl}}"], "path": ["api", "v1", "segments", ":segment_id", "add_customers"], "variable": [{ "key": "segment_id", "value": "1" }] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{siteId}}" }, { "key": "password", "value": "{{apiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"ids\": [\"user@example.com\"]\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove people from a manual segment",
+          "request": {
+            "url": { "raw": "{{trackUrl}}/api/v1/segments/:segment_id/remove_customers", "host": ["{{trackUrl}}"], "path": ["api", "v1", "segments", ":segment_id", "remove_customers"], "variable": [{ "key": "segment_id", "value": "1" }] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{siteId}}" }, { "key": "password", "value": "{{apiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"ids\": [\"user@example.com\"]\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Track API v2",
+      "item": [
+        {
+          "name": "Create, update, or delete an entity (v2)",
+          "request": {
+            "url": { "raw": "{{trackUrl}}/api/v2/entity", "host": ["{{trackUrl}}"], "path": ["api", "v2", "entity"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{siteId}}" }, { "key": "password", "value": "{{apiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"type\": \"person\",\n  \"action\": \"identify\",\n  \"identifiers\": { \"email\": \"user@example.com\" },\n  \"attributes\": { \"first_name\": \"Jane\" }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        },
+        {
+          "name": "Batch entity operations (v2)",
+          "request": {
+            "url": { "raw": "{{trackUrl}}/api/v2/batch", "host": ["{{trackUrl}}"], "path": ["api", "v2", "batch"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{siteId}}" }, { "key": "password", "value": "{{apiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"batch\": [\n    { \"type\": \"person\", \"action\": \"identify\", \"identifiers\": { \"email\": \"user@example.com\" } }\n  ]\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "App API - Transactional",
+      "description": { "content": "App API transactional send. Bearer App API key.", "type": "text/plain" },
+      "item": [
+        {
+          "name": "Send a transactional email",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/send/email", "host": ["{{appUrl}}"], "path": ["v1", "send", "email"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"transactional_message_id\": \"welcome\",\n  \"to\": \"user@example.com\",\n  \"identifiers\": { \"id\": \"user@example.com\" },\n  \"message_data\": { \"name\": \"Jane\" }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        },
+        {
+          "name": "Send a transactional push",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/send/push", "host": ["{{appUrl}}"], "path": ["v1", "send", "push"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"transactional_message_id\": \"alert\",\n  \"identifiers\": { \"id\": \"user@example.com\" },\n  \"title\": \"Hello\",\n  \"message\": \"You have a new message\"\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        },
+        {
+          "name": "Send a transactional SMS",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/send/sms", "host": ["{{appUrl}}"], "path": ["v1", "send", "sms"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"transactional_message_id\": \"otp\",\n  \"to\": \"+15555550100\",\n  \"identifiers\": { \"id\": \"user@example.com\" }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "App API - Broadcasts",
+      "item": [
+        {
+          "name": "Trigger an API-driven broadcast",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/send/broadcast", "host": ["{{appUrl}}"], "path": ["v1", "send", "broadcast"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"id\": 1,\n  \"data\": { \"headline\": \"Big news\" }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "App API - Customers",
+      "item": [
+        {
+          "name": "Search for people",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/customers", "host": ["{{appUrl}}"], "path": ["v1", "customers"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"filter\": { \"and\": [ { \"attribute\": { \"field\": \"email\", \"operator\": \"exists\" } } ] }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a person's attributes",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/customers/:customer_id/attributes", "host": ["{{appUrl}}"], "path": ["v1", "customers", ":customer_id", "attributes"], "variable": [{ "key": "customer_id", "value": "user@example.com" }] },
+            "header": [],
+            "method": "GET",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a person's segments",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/customers/:customer_id/segments", "host": ["{{appUrl}}"], "path": ["v1", "customers", ":customer_id", "segments"], "variable": [{ "key": "customer_id", "value": "user@example.com" }] },
+            "header": [],
+            "method": "GET",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] }
+          },
+          "response": []
+        },
+        {
+          "name": "Get messages sent to a person",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/customers/:customer_id/messages", "host": ["{{appUrl}}"], "path": ["v1", "customers", ":customer_id", "messages"], "variable": [{ "key": "customer_id", "value": "user@example.com" }] },
+            "header": [],
+            "method": "GET",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "App API - Segments",
+      "item": [
+        {
+          "name": "List segments",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/segments", "host": ["{{appUrl}}"], "path": ["v1", "segments"] },
+            "header": [],
+            "method": "GET",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a manual segment",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/segments", "host": ["{{appUrl}}"], "path": ["v1", "segments"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"segment\": { \"name\": \"VIPs\", \"description\": \"High value customers\" }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "App API - Campaigns",
+      "item": [
+        {
+          "name": "List campaigns",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/campaigns", "host": ["{{appUrl}}"], "path": ["v1", "campaigns"] },
+            "header": [],
+            "method": "GET",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a campaign",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/campaigns/:campaign_id", "host": ["{{appUrl}}"], "path": ["v1", "campaigns", ":campaign_id"], "variable": [{ "key": "campaign_id", "value": "1" }] },
+            "header": [],
+            "method": "GET",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] }
+          },
+          "response": []
+        },
+        {
+          "name": "Get campaign metrics",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/campaigns/:campaign_id/metrics", "host": ["{{appUrl}}"], "path": ["v1", "campaigns", ":campaign_id", "metrics"], "variable": [{ "key": "campaign_id", "value": "1" }] },
+            "header": [],
+            "method": "GET",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "App API - Messages",
+      "item": [
+        {
+          "name": "List sent messages",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/messages", "host": ["{{appUrl}}"], "path": ["v1", "messages"] },
+            "header": [],
+            "method": "GET",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "App API - Exports",
+      "item": [
+        {
+          "name": "Export people",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/exports/customers", "host": ["{{appUrl}}"], "path": ["v1", "exports", "customers"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"filter\": { \"segment\": { \"id\": 1 } }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        },
+        {
+          "name": "List exports",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/exports", "host": ["{{appUrl}}"], "path": ["v1", "exports"] },
+            "header": [],
+            "method": "GET",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "App API - Collections",
+      "item": [
+        {
+          "name": "List collections",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/collections", "host": ["{{appUrl}}"], "path": ["v1", "collections"] },
+            "header": [],
+            "method": "GET",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a collection",
+          "request": {
+            "url": { "raw": "{{appUrl}}/v1/collections", "host": ["{{appUrl}}"], "path": ["v1", "collections"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{appApiKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"products\",\n  \"data\": [ { \"sku\": \"abc\", \"price\": 10 } ]\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pipelines / CDP API",
+      "description": { "content": "Pipelines / CDP API. Bearer source write key.", "type": "text/plain" },
+      "item": [
+        {
+          "name": "Identify a user",
+          "request": {
+            "url": { "raw": "{{cdpUrl}}/v1/identify", "host": ["{{cdpUrl}}"], "path": ["v1", "identify"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{writeKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"userId\": \"user-123\",\n  \"traits\": { \"email\": \"user@example.com\" }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        },
+        {
+          "name": "Track an event",
+          "request": {
+            "url": { "raw": "{{cdpUrl}}/v1/track", "host": ["{{cdpUrl}}"], "path": ["v1", "track"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{writeKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"userId\": \"user-123\",\n  \"event\": \"Order Completed\",\n  \"properties\": { \"total\": 99 }\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        },
+        {
+          "name": "Batch Pipelines calls",
+          "request": {
+            "url": { "raw": "{{cdpUrl}}/v1/batch", "host": ["{{cdpUrl}}"], "path": ["v1", "batch"] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "method": "POST",
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{writeKey}}" }] },
+            "body": { "mode": "raw", "raw": "{\n  \"batch\": [\n    { \"type\": \"track\", \"userId\": \"user-123\", \"event\": \"Page Viewed\" }\n  ]\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "type": "string", "value": "https://track.customer.io", "key": "trackUrl" },
+    { "type": "string", "value": "https://api.customer.io", "key": "appUrl" },
+    { "type": "string", "value": "https://cdp.customer.io", "key": "cdpUrl" },
+    { "type": "string", "value": "your-site-id", "key": "siteId" },
+    { "type": "string", "value": "your-track-api-key", "key": "apiKey" },
+    { "type": "string", "value": "your-app-api-key", "key": "appApiKey" },
+    { "type": "string", "value": "your-source-write-key", "key": "writeKey" }
+  ],
+  "info": {
+    "_postman_id": "c4f1e7a2-9b8d-4c3e-a6f1-2d7b9e0c1a45",
+    "name": "Customer.io API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Customer.io APIs - Track API (Basic site_id:api_key), App / Transactional API (Bearer App API key), and Pipelines / CDP API (Bearer source write key).\n\nContact Support:\n Name: Customer.io Support\n Email: win@customer.io",
+      "type": "text/plain"
+    }
+  }
+}

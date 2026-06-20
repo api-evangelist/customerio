@@ -1,0 +1,111 @@
+aid: customerio
+name: Customer.io
+review:
+  question: Does Customer.io expose a documented public WebSocket API?
+  answer: false
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    Per API Evangelist scope, HTTP Server-Sent Events (SSE) and other
+    streaming transports are in-scope for AsyncAPI modeling. Customer.io's
+    documented APIs (Track, App / Transactional, Pipelines / CDP) are all
+    request/response REST over HTTPS, and the asynchronous "data out" surface
+    is reporting webhooks (outbound HTTP POST), not a client-subscribed
+    stream. No SSE or WebSocket endpoint is documented, so no AsyncAPI
+    document was authored. The reporting-webhooks surface is captured as an
+    API entry in apis.yml and documented below, but webhooks are server-to-
+    server callbacks, not a streaming protocol modeled in AsyncAPI here.
+findings:
+  summary: |
+    Customer.io does not publish a documented public WebSocket API. The
+    platform exposes three REST (HTTPS) API surfaces: the Track API
+    (track.customer.io, HTTP Basic site_id:api_key), the App / Transactional
+    API (api.customer.io, Bearer App API key), and the Pipelines / Data
+    Pipelines CDP API (cdp.customer.io, Bearer source write key). Asynchronous
+    delivery activity is sent out via Reporting Webhooks - outbound HTTP POST
+    callbacks of JSON message-activity events to a customer-supplied endpoint.
+    No realtime, bidirectional, SSE, or WebSocket (ws:// or wss://) streaming
+    endpoint is documented for any product.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://track.customer.io
+      documented: true
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.customer.io
+      documented: true
+    - protocol: REST
+      scheme: https
+      baseURL: https://cdp.customer.io
+      documented: true
+    - protocol: Webhook
+      scheme: https
+      note: Reporting Webhooks deliver message-activity events as outbound HTTP POST JSON to a customer endpoint. Server-to-server callback, not a client-subscribed stream.
+      documented: true
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events streaming endpoint is documented.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in the Track, App, Pipelines, or webhooks references as of the review date.
+  endpointsConfirmedRest:
+    - PUT    https://track.customer.io/api/v1/customers/{id}
+    - DELETE https://track.customer.io/api/v1/customers/{id}
+    - POST   https://track.customer.io/api/v1/events
+    - POST   https://track.customer.io/api/v1/customers/{id}/events
+    - PUT    https://track.customer.io/api/v1/customers/{id}/devices
+    - DELETE https://track.customer.io/api/v1/customers/{id}/devices/{device_id}
+    - POST   https://track.customer.io/api/v1/segments/{id}/add_customers
+    - POST   https://track.customer.io/api/v1/segments/{id}/remove_customers
+    - POST   https://track.customer.io/api/v2/entity
+    - POST   https://track.customer.io/api/v2/batch
+    - POST   https://api.customer.io/v1/send/email
+    - POST   https://api.customer.io/v1/send/push
+    - POST   https://api.customer.io/v1/send/sms
+    - POST   https://api.customer.io/v1/send/broadcast
+    - POST   https://api.customer.io/v1/customers
+    - GET    https://api.customer.io/v1/customers/{id}/attributes
+    - GET    https://api.customer.io/v1/customers/{id}/segments
+    - GET    https://api.customer.io/v1/customers/{id}/messages
+    - GET    https://api.customer.io/v1/segments
+    - POST   https://api.customer.io/v1/segments
+    - GET    https://api.customer.io/v1/campaigns
+    - GET    https://api.customer.io/v1/campaigns/{id}/metrics
+    - GET    https://api.customer.io/v1/messages
+    - POST   https://api.customer.io/v1/exports/customers
+    - GET    https://api.customer.io/v1/exports
+    - POST   https://cdp.customer.io/v1/identify
+    - POST   https://cdp.customer.io/v1/track
+    - POST   https://cdp.customer.io/v1/page
+    - POST   https://cdp.customer.io/v1/screen
+    - POST   https://cdp.customer.io/v1/group
+    - POST   https://cdp.customer.io/v1/alias
+    - POST   https://cdp.customer.io/v1/batch
+sources:
+  - url: https://docs.customer.io/integrations/api/track/
+    type: APIReference
+    note: Track API; HTTP Basic auth with site_id:api_key; v1 and v2 REST endpoints.
+  - url: https://docs.customer.io/integrations/api/app/
+    type: APIReference
+    note: App / Transactional API; Bearer App API key; transactional send, broadcasts, customers, segments, campaigns, exports.
+  - url: https://docs.customer.io/integrations/api/cdp/
+    type: APIReference
+    note: Pipelines / CDP API; Bearer source write key; identify/track/page/screen/group/alias/batch over REST.
+  - url: https://docs.customer.io/integrations/api/webhooks/
+    type: Documentation
+    note: Reporting Webhooks deliver message-activity events via outbound HTTP POST; no WebSocket or SSE.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE protocol surface exists. The asynchronous data-out
+    capability is outbound Reporting Webhooks, captured as a dedicated API
+    entry in apis.yml. No AsyncAPI document was authored because no
+    client-subscribed streaming transport (SSE/WebSocket) is documented.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

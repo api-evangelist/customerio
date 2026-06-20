@@ -1,0 +1,103 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Customer.io
+providerId: customerio
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Customer Messaging
+- Marketing Automation
+- Email
+- CDP
+- Transactional
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Customer.io spend. Customer.io bills a platform subscription
+  (Essentials or Premium) priced on the number of profiles in the workspace,
+  with bundled email volume and overage rates for additional profiles
+  ($0.009/profile), additional emails ($0.12 per 1,000), and AI credits ($10
+  per 100K). The cost drivers are profile count, message volume across
+  email/sms/push/in-app, and AI Agent credit consumption rather than per-API-call
+  metering.
+notes: >-
+  Overage rates and bundled volumes are subject to change; verify against the
+  Customer.io pricing page during reconciliation.
+sources:
+- https://customer.io/pricing
+- https://docs.customer.io
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Customer.io
+serviceCategory: Marketing and Customer Engagement
+billingModel:
+  pricingCategory: Subscription-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Customer.io
+  ServiceCategory: Marketing and Customer Engagement
+  ProviderName: Customer.io
+  PublisherName: Customer.io
+  InvoiceIssuerName: Customer.io
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Subscription-Based
+meters:
+- name: profiles
+  description: People plus objects stored in the workspace; the primary subscription sizing metric.
+  unit: profiles
+  aggregation: max
+  dimensions:
+  - workspace
+  - plan
+- name: email_volume
+  description: Emails sent per month; bundled in plan with $0.12 per 1,000 overage.
+  unit: emails
+  aggregation: sum
+  dimensions:
+  - workspace
+  - campaign
+- name: message_volume
+  description: Non-email messages sent (SMS, push, in-app); billed per provider/channel terms.
+  unit: messages
+  aggregation: sum
+  dimensions:
+  - workspace
+  - channel
+- name: ai_credits
+  description: AI Agent credit consumption, billed at $10 per 100K credits.
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - workspace
+- name: overage_profiles
+  description: Profiles above the plan allotment, billed at $0.009 per profile.
+  unit: profiles
+  aggregation: sum
+  dimensions:
+  - workspace
+principles:
+- name: Visibility
+  description: Track profile count and message volume against plan allotments to anticipate overage.
+- name: Allocation
+  description: Tag campaigns and workspaces to attribute message and profile spend to teams.
+- name: Optimization
+  description: Suppress and delete stale profiles to control the profile-based subscription cost; batch and segment sends; reserve AI credits for high-value workflows.
+- name: Accountability
+  description: Assign workspace owners and review monthly profile, email, and AI-credit spend against budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,149 @@
+aid: customerio
+url: https://raw.githubusercontent.com/api-evangelist/customerio/refs/heads/main/apis.yml
+name: Customer.io
+kind: company
+description: Customer.io is a customer messaging and marketing automation platform.
+  Its APIs let teams pipe behavioral data in, manage people and their attributes,
+  trigger campaigns and broadcasts, send transactional email, push, SMS, and in-app
+  messages, and stream delivery activity back out via reporting webhooks. The surface
+  spans the Track API (basic site-id + api-key auth), the App / Transactional API
+  (Bearer), and the Pipelines / Data Pipelines CDP API.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Customer Messaging
+- Marketing Automation
+- Email
+- CDP
+- Transactional
+created: '2026-06-20'
+modified: '2026-06-20'
+specificationVersion: '0.19'
+apis:
+- aid: customerio:track-api
+  name: Customer.io Track API
+  tags:
+  - Track
+  - People
+  - Events
+  - Devices
+  - Segments
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.customer.io/integrations/api/track/
+  baseURL: https://track.customer.io/api/v1
+  properties:
+  - url: https://docs.customer.io/integrations/api/track/
+    type: Documentation
+  - url: https://docs.customer.io/integrations/api/track/
+    type: APIReference
+  - url: openapi/customerio-openapi.yml
+    type: OpenAPI
+  - url: collections/customerio.postman_collection.json
+    type: PostmanCollection
+  description: Behavioral tracking API for adding and updating people, sending
+    customer and anonymous events, registering device tokens, and managing manual
+    segment membership. Authenticated with HTTP Basic using site_id and api_key.
+    Includes v2 entity and batch endpoints.
+- aid: customerio:app-transactional-api
+  name: Customer.io App / Transactional API
+  tags:
+  - Transactional
+  - Broadcasts
+  - Customers
+  - Campaigns
+  - Exports
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.customer.io/integrations/api/app/
+  baseURL: https://api.customer.io
+  properties:
+  - url: https://docs.customer.io/integrations/api/app/
+    type: Documentation
+  - url: https://docs.customer.io/integrations/api/app/
+    type: APIReference
+  - url: openapi/customerio-openapi.yml
+    type: OpenAPI
+  - url: collections/customerio.postman_collection.json
+    type: PostmanCollection
+  description: App API for sending transactional email, push, SMS, and in-app
+    messages, triggering API-driven broadcasts, searching people, reading
+    segments, campaigns and their metrics, listing messages, running exports,
+    and managing collections. Authenticated with an App API key as a Bearer
+    token.
+- aid: customerio:pipelines-cdp-api
+  name: Customer.io Pipelines / Data Pipelines CDP API
+  tags:
+  - CDP
+  - Pipelines
+  - Identify
+  - Track
+  - Batch
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.customer.io/integrations/api/cdp/
+  baseURL: https://cdp.customer.io/v1
+  properties:
+  - url: https://docs.customer.io/integrations/api/cdp/
+    type: Documentation
+  - url: https://docs.customer.io/integrations/api/cdp/
+    type: APIReference
+  - url: openapi/customerio-openapi.yml
+    type: OpenAPI
+  - url: collections/customerio.postman_collection.json
+    type: PostmanCollection
+  description: Segment-compatible customer data pipeline API with identify,
+    track, page, screen, group, alias, and batch calls. Routes first-party
+    behavioral and identity data into Customer.io and onward to destinations.
+    Authenticated with a source write key as a Bearer token.
+- aid: customerio:reporting-api
+  name: Customer.io Reporting API
+  tags:
+  - Reporting
+  - Metrics
+  - Analytics
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.customer.io/integrations/api/app/
+  baseURL: https://api.customer.io
+  properties:
+  - url: https://docs.customer.io/integrations/api/app/
+    type: Documentation
+  - url: https://docs.customer.io/integrations/api/app/
+    type: APIReference
+  - url: openapi/customerio-openapi.yml
+    type: OpenAPI
+  description: App API endpoints that return message activity and metrics -
+    per-campaign metrics, customer message history, and sent message listings -
+    for analyzing messaging performance. Authenticated with an App API key as a
+    Bearer token.
+- aid: customerio:reporting-webhooks
+  name: Customer.io Reporting Webhooks
+  tags:
+  - Webhooks
+  - Events
+  - Reporting
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.customer.io/integrations/api/webhooks/
+  baseURL: https://docs.customer.io/integrations/api/webhooks/
+  properties:
+  - url: https://docs.customer.io/integrations/api/webhooks/
+    type: Documentation
+  - url: https://docs.customer.io/integrations/data-out/connections/webhooks/
+    type: APIReference
+  description: Outbound reporting webhooks that POST real-time message activity
+    events (email/sms/push/in-app delivered, opened, clicked, bounced, converted,
+    unsubscribed, and more) as JSON to a customer-supplied HTTPS endpoint.
+common:
+- type: GitHubOrganization
+  url: https://github.com/customerio
+- type: LinkedIn
+  url: https://www.linkedin.com/company/customer-io
+- type: Website
+  url: https://customer.io
+- type: Documentation
+  url: https://docs.customer.io
+- type: Plans
+  url: plans/customerio-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/customerio-rate-limits.yml
+- type: FinOps
+  url: finops/customerio-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

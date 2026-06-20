@@ -1,0 +1,383 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Customer.io API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{appApiKey}}"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Track API - People", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create or update a person", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://track.customer.io/api/v1/customers/{identifier}",
+            "auth": { "type": "basic", "username": "{{siteId}}", "password": "{{apiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"email\": \"user@example.com\",\n  \"created_at\": 1234567890\n}" }
+          },
+          "docs": "Create or update a person and set their attributes. Track API, HTTP Basic auth."
+        },
+        {
+          "info": { "name": "Delete a person", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://track.customer.io/api/v1/customers/{identifier}",
+            "auth": { "type": "basic", "username": "{{siteId}}", "password": "{{apiKey}}" }
+          },
+          "docs": "Delete a person from the workspace."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Track API - Events", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Track an anonymous event", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://track.customer.io/api/v1/events",
+            "auth": { "type": "basic", "username": "{{siteId}}", "password": "{{apiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"name\": \"signup\",\n  \"data\": { \"plan\": \"essentials\" }\n}" }
+          },
+          "docs": "Send an event not yet attributed to a known person."
+        },
+        {
+          "info": { "name": "Track a customer event", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://track.customer.io/api/v1/customers/{identifier}/events",
+            "auth": { "type": "basic", "username": "{{siteId}}", "password": "{{apiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"name\": \"purchase\",\n  \"data\": { \"amount\": 99 }\n}" }
+          },
+          "docs": "Send an event attributed to a known person."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Track API - Devices", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Add or update a device", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://track.customer.io/api/v1/customers/{identifier}/devices",
+            "auth": { "type": "basic", "username": "{{siteId}}", "password": "{{apiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"device\": { \"id\": \"device-token\", \"platform\": \"ios\" }\n}" }
+          },
+          "docs": "Register or update a device token for push notifications."
+        },
+        {
+          "info": { "name": "Delete a device", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://track.customer.io/api/v1/customers/{identifier}/devices/{device_id}",
+            "auth": { "type": "basic", "username": "{{siteId}}", "password": "{{apiKey}}" }
+          },
+          "docs": "Remove a device token from a person."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Track API - Segments", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Add people to a manual segment", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://track.customer.io/api/v1/segments/{segment_id}/add_customers",
+            "auth": { "type": "basic", "username": "{{siteId}}", "password": "{{apiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"ids\": [\"user@example.com\"]\n}" }
+          },
+          "docs": "Add people to a manual segment."
+        },
+        {
+          "info": { "name": "Remove people from a manual segment", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://track.customer.io/api/v1/segments/{segment_id}/remove_customers",
+            "auth": { "type": "basic", "username": "{{siteId}}", "password": "{{apiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"ids\": [\"user@example.com\"]\n}" }
+          },
+          "docs": "Remove people from a manual segment."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Track API v2", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create, update, or delete an entity (v2)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://track.customer.io/api/v2/entity",
+            "auth": { "type": "basic", "username": "{{siteId}}", "password": "{{apiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"type\": \"person\",\n  \"action\": \"identify\",\n  \"identifiers\": { \"email\": \"user@example.com\" }\n}" }
+          },
+          "docs": "Track API v2 single-payload entity endpoint."
+        },
+        {
+          "info": { "name": "Batch entity operations (v2)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://track.customer.io/api/v2/batch",
+            "auth": { "type": "basic", "username": "{{siteId}}", "password": "{{apiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"batch\": []\n}" }
+          },
+          "docs": "Batch mixed person/object/event operations."
+        }
+      ]
+    },
+    {
+      "info": { "name": "App API - Transactional", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Send a transactional email", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.customer.io/v1/send/email",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"transactional_message_id\": \"welcome\",\n  \"to\": \"user@example.com\",\n  \"identifiers\": { \"id\": \"user@example.com\" }\n}" }
+          },
+          "docs": "Send a single transactional email."
+        },
+        {
+          "info": { "name": "Send a transactional push", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.customer.io/v1/send/push",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"transactional_message_id\": \"alert\",\n  \"identifiers\": { \"id\": \"user@example.com\" }\n}" }
+          },
+          "docs": "Send a transactional push notification."
+        },
+        {
+          "info": { "name": "Send a transactional SMS", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.customer.io/v1/send/sms",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"transactional_message_id\": \"otp\",\n  \"to\": \"+15555550100\",\n  \"identifiers\": { \"id\": \"user@example.com\" }\n}" }
+          },
+          "docs": "Send a transactional SMS."
+        }
+      ]
+    },
+    {
+      "info": { "name": "App API - Broadcasts", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Trigger an API-driven broadcast", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.customer.io/v1/send/broadcast",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"id\": 1,\n  \"data\": { \"headline\": \"Big news\" }\n}" }
+          },
+          "docs": "Trigger a broadcast; limited to 1 request every 10 seconds."
+        }
+      ]
+    },
+    {
+      "info": { "name": "App API - Customers", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search for people", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.customer.io/v1/customers",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"filter\": {}\n}" }
+          },
+          "docs": "Search for people by attributes and segment membership."
+        },
+        {
+          "info": { "name": "Get a person's attributes", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.customer.io/v1/customers/{customer_id}/attributes",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" }
+          },
+          "docs": "Get a person's attributes."
+        },
+        {
+          "info": { "name": "Get a person's segments", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.customer.io/v1/customers/{customer_id}/segments",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" }
+          },
+          "docs": "Get the segments a person belongs to."
+        },
+        {
+          "info": { "name": "Get messages sent to a person", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.customer.io/v1/customers/{customer_id}/messages",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" }
+          },
+          "docs": "Get messages delivered to a person."
+        }
+      ]
+    },
+    {
+      "info": { "name": "App API - Segments", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List segments", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.customer.io/v1/segments",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" }
+          },
+          "docs": "List segments."
+        },
+        {
+          "info": { "name": "Create a manual segment", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.customer.io/v1/segments",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"segment\": { \"name\": \"VIPs\" }\n}" }
+          },
+          "docs": "Create a manual segment."
+        }
+      ]
+    },
+    {
+      "info": { "name": "App API - Campaigns", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List campaigns", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.customer.io/v1/campaigns",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" }
+          },
+          "docs": "List campaigns."
+        },
+        {
+          "info": { "name": "Get a campaign", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.customer.io/v1/campaigns/{campaign_id}",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" }
+          },
+          "docs": "Get a campaign."
+        },
+        {
+          "info": { "name": "Get campaign metrics", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.customer.io/v1/campaigns/{campaign_id}/metrics",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" }
+          },
+          "docs": "Get campaign metrics."
+        }
+      ]
+    },
+    {
+      "info": { "name": "App API - Messages", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List sent messages", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.customer.io/v1/messages",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" }
+          },
+          "docs": "List sent messages."
+        }
+      ]
+    },
+    {
+      "info": { "name": "App API - Exports", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Export people", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.customer.io/v1/exports/customers",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"filter\": {}\n}" }
+          },
+          "docs": "Begin an export of people matching a filter."
+        },
+        {
+          "info": { "name": "List exports", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.customer.io/v1/exports",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" }
+          },
+          "docs": "List exports."
+        }
+      ]
+    },
+    {
+      "info": { "name": "App API - Collections", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List collections", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.customer.io/v1/collections",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" }
+          },
+          "docs": "List collections."
+        },
+        {
+          "info": { "name": "Create a collection", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.customer.io/v1/collections",
+            "auth": { "type": "bearer", "token": "{{appApiKey}}" },
+            "body": { "type": "json", "data": "{\n  \"name\": \"products\",\n  \"data\": []\n}" }
+          },
+          "docs": "Create a collection."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Pipelines / CDP API", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Identify a user", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://cdp.customer.io/v1/identify",
+            "auth": { "type": "bearer", "token": "{{writeKey}}" },
+            "body": { "type": "json", "data": "{\n  \"userId\": \"user-123\",\n  \"traits\": { \"email\": \"user@example.com\" }\n}" }
+          },
+          "docs": "Pipelines identify call. Requires userId or anonymousId."
+        },
+        {
+          "info": { "name": "Track an event", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://cdp.customer.io/v1/track",
+            "auth": { "type": "bearer", "token": "{{writeKey}}" },
+            "body": { "type": "json", "data": "{\n  \"userId\": \"user-123\",\n  \"event\": \"Order Completed\"\n}" }
+          },
+          "docs": "Pipelines track call. Requires an event name."
+        },
+        {
+          "info": { "name": "Batch Pipelines calls", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://cdp.customer.io/v1/batch",
+            "auth": { "type": "bearer", "token": "{{writeKey}}" },
+            "body": { "type": "json", "data": "{\n  \"batch\": []\n}" }
+          },
+          "docs": "Submit multiple Pipelines calls (1 MB limit)."
+        }
+      ]
+    }
+  ]
+}
