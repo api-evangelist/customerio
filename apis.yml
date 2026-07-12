@@ -130,6 +130,14 @@ apis:
     events (email/sms/push/in-app delivered, opened, clicked, bounced, converted,
     unsubscribed, and more) as JSON to a customer-supplied HTTPS endpoint.
 common:
+- type: TrustCenter
+  url: security/customerio-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/customerio-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/customerio-domain-security.yml
+- type: Authentication
+  url: authentication/customerio-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/customerio
 - type: LinkedIn
