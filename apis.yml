@@ -130,6 +130,8 @@ apis:
     events (email/sms/push/in-app delivered, opened, clicked, bounced, converted,
     unsubscribed, and more) as JSON to a customer-supplied HTTPS endpoint.
 common:
+- type: AgenticAccess
+  url: agentic-access/customerio-agentic-access.yml
 - type: TrustCenter
   url: security/customerio-trust-center.yml
 - type: VulnerabilityDisclosure
