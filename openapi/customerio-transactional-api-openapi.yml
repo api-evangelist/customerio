@@ -1,0 +1,200 @@
+openapi: 3.0.1
+info:
+  title: Customer.io Broadcasts Transactional API
+  description: Specification of the Customer.io APIs for customer messaging and marketing automation. Covers the Track API (track.customer.io - people, events, devices, manual segments, plus the v2 entity/batch endpoints), the App / Transactional API (api.customer.io - transactional send, API-triggered broadcasts, customers, segments, campaigns, newsletters, messages, exports, collections, snippets, sender identities, imports), and the Pipelines / Data Pipelines CDP API (cdp.customer.io - identify, track, page, screen, group, alias, batch). Authentication differs per surface - the Track API uses HTTP Basic auth with site_id:api_key, the App and Pipelines APIs use a Bearer token.
+  termsOfService: https://customer.io/legal/terms-of-service/
+  contact:
+    name: Customer.io Support
+    email: win@customer.io
+  version: '1.0'
+servers:
+- url: https://track.customer.io
+  description: Track API (US region)
+- url: https://track-eu.customer.io
+  description: Track API (EU region)
+- url: https://api.customer.io
+  description: App / Transactional API (US region)
+- url: https://api-eu.customer.io
+  description: App / Transactional API (EU region)
+- url: https://cdp.customer.io
+  description: Pipelines / Data Pipelines CDP API (US region)
+- url: https://cdp-eu.customer.io
+  description: Pipelines / Data Pipelines CDP API (EU region)
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Transactional
+  description: App API - send transactional email, push, SMS, and in-app messages.
+paths:
+  /v1/send/email:
+    post:
+      operationId: sendTransactionalEmail
+      tags:
+      - Transactional
+      summary: Send a transactional email
+      description: Send a single transactional email using a transactional message template or inline body. App API Bearer token required.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailRequest'
+      responses:
+        '200':
+          description: Message accepted for delivery.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+  /v1/send/push:
+    post:
+      operationId: sendTransactionalPush
+      tags:
+      - Transactional
+      summary: Send a transactional push notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendPushRequest'
+      responses:
+        '200':
+          description: Push accepted for delivery.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+  /v1/send/sms:
+    post:
+      operationId: sendTransactionalSms
+      tags:
+      - Transactional
+      summary: Send a transactional SMS
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transactional_message_id:
+                  oneOf:
+                  - type: string
+                  - type: integer
+                to:
+                  type: string
+                identifiers:
+                  $ref: '#/components/schemas/Identifiers'
+                message_data:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: SMS accepted for delivery.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    Identifiers:
+      type: object
+      description: One or more identifiers locating a person (id, email, or cio_id).
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        cio_id:
+          type: string
+    SendEmailRequest:
+      type: object
+      properties:
+        transactional_message_id:
+          oneOf:
+          - type: string
+          - type: integer
+          description: ID or trigger name of a transactional message template.
+        to:
+          type: string
+        identifiers:
+          $ref: '#/components/schemas/Identifiers'
+        from:
+          type: string
+        subject:
+          type: string
+        body:
+          type: string
+        message_data:
+          type: object
+          additionalProperties: true
+        attachments:
+          type: object
+          additionalProperties:
+            type: string
+        disable_message_retention:
+          type: boolean
+        send_to_unsubscribed:
+          type: boolean
+    SendPushRequest:
+      type: object
+      properties:
+        transactional_message_id:
+          oneOf:
+          - type: string
+          - type: integer
+        to:
+          type: string
+        identifiers:
+          $ref: '#/components/schemas/Identifiers'
+        title:
+          type: string
+        message:
+          type: string
+        message_data:
+          type: object
+          additionalProperties: true
+    Error:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            error:
+              type: string
+            errors:
+              type: array
+              items:
+                type: string
+    SendResponse:
+      type: object
+      properties:
+        delivery_id:
+          type: string
+        queued_at:
+          type: integer
+        recipient:
+          type: object
+          additionalProperties: true
+  responses:
+    Unauthorized:
+      description: Authentication failed or credentials missing.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Track API auth. Base-64 encode site_id:api_key and pass it in the Authorization header (Basic ...).
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: App API and Pipelines API auth. Pass the App API key (or Pipelines source write key) as a Bearer token in the Authorization header.

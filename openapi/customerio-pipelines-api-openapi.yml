@@ -1,0 +1,237 @@
+openapi: 3.0.1
+info:
+  title: Customer.io Broadcasts Pipelines API
+  description: Specification of the Customer.io APIs for customer messaging and marketing automation. Covers the Track API (track.customer.io - people, events, devices, manual segments, plus the v2 entity/batch endpoints), the App / Transactional API (api.customer.io - transactional send, API-triggered broadcasts, customers, segments, campaigns, newsletters, messages, exports, collections, snippets, sender identities, imports), and the Pipelines / Data Pipelines CDP API (cdp.customer.io - identify, track, page, screen, group, alias, batch). Authentication differs per surface - the Track API uses HTTP Basic auth with site_id:api_key, the App and Pipelines APIs use a Bearer token.
+  termsOfService: https://customer.io/legal/terms-of-service/
+  contact:
+    name: Customer.io Support
+    email: win@customer.io
+  version: '1.0'
+servers:
+- url: https://track.customer.io
+  description: Track API (US region)
+- url: https://track-eu.customer.io
+  description: Track API (EU region)
+- url: https://api.customer.io
+  description: App / Transactional API (US region)
+- url: https://api-eu.customer.io
+  description: App / Transactional API (EU region)
+- url: https://cdp.customer.io
+  description: Pipelines / Data Pipelines CDP API (US region)
+- url: https://cdp-eu.customer.io
+  description: Pipelines / Data Pipelines CDP API (EU region)
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Pipelines
+  description: Pipelines / CDP API - identify, track, page, screen, group, alias, batch.
+paths:
+  /v1/identify:
+    post:
+      operationId: pipelinesIdentify
+      tags:
+      - Pipelines
+      summary: Identify a user (Pipelines)
+      description: Pipelines / CDP identify call. Requires at least one of userId or anonymousId. Bearer auth with a source write key.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PipelinesIdentify'
+      responses:
+        '200':
+          description: Call accepted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+  /v1/track:
+    post:
+      operationId: pipelinesTrack
+      tags:
+      - Pipelines
+      summary: Track an event (Pipelines)
+      description: Pipelines / CDP track call. Requires an event name and one of userId or anonymousId.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PipelinesTrack'
+      responses:
+        '200':
+          description: Call accepted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+  /v1/page:
+    post:
+      operationId: pipelinesPage
+      tags:
+      - Pipelines
+      summary: Record a page view (Pipelines)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Call accepted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+  /v1/screen:
+    post:
+      operationId: pipelinesScreen
+      tags:
+      - Pipelines
+      summary: Record a screen view (Pipelines)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Call accepted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+  /v1/group:
+    post:
+      operationId: pipelinesGroup
+      tags:
+      - Pipelines
+      summary: Associate a user with a group (Pipelines)
+      description: Requires a groupId.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Call accepted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+  /v1/alias:
+    post:
+      operationId: pipelinesAlias
+      tags:
+      - Pipelines
+      summary: Alias two identities (Pipelines)
+      description: Requires a previousId.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Call accepted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+  /v1/batch:
+    post:
+      operationId: pipelinesBatch
+      tags:
+      - Pipelines
+      summary: Batch Pipelines calls
+      description: Submit multiple identify/track/page/screen/group/alias calls (1 MB limit).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                batch:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: true
+      responses:
+        '200':
+          description: Batch accepted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    PipelinesTrack:
+      type: object
+      required:
+      - event
+      properties:
+        event:
+          type: string
+        userId:
+          type: string
+        anonymousId:
+          type: string
+        properties:
+          type: object
+          additionalProperties: true
+        timestamp:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            error:
+              type: string
+            errors:
+              type: array
+              items:
+                type: string
+    PipelinesIdentify:
+      type: object
+      properties:
+        userId:
+          type: string
+        anonymousId:
+          type: string
+        traits:
+          type: object
+          additionalProperties: true
+        timestamp:
+          type: string
+          format: date-time
+  responses:
+    Unauthorized:
+      description: Authentication failed or credentials missing.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Track API auth. Base-64 encode site_id:api_key and pass it in the Authorization header (Basic ...).
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: App API and Pipelines API auth. Pass the App API key (or Pipelines source write key) as a Bearer token in the Authorization header.

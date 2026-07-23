@@ -1,0 +1,110 @@
+openapi: 3.0.1
+info:
+  title: Customer.io Broadcasts Campaigns API
+  description: Specification of the Customer.io APIs for customer messaging and marketing automation. Covers the Track API (track.customer.io - people, events, devices, manual segments, plus the v2 entity/batch endpoints), the App / Transactional API (api.customer.io - transactional send, API-triggered broadcasts, customers, segments, campaigns, newsletters, messages, exports, collections, snippets, sender identities, imports), and the Pipelines / Data Pipelines CDP API (cdp.customer.io - identify, track, page, screen, group, alias, batch). Authentication differs per surface - the Track API uses HTTP Basic auth with site_id:api_key, the App and Pipelines APIs use a Bearer token.
+  termsOfService: https://customer.io/legal/terms-of-service/
+  contact:
+    name: Customer.io Support
+    email: win@customer.io
+  version: '1.0'
+servers:
+- url: https://track.customer.io
+  description: Track API (US region)
+- url: https://track-eu.customer.io
+  description: Track API (EU region)
+- url: https://api.customer.io
+  description: App / Transactional API (US region)
+- url: https://api-eu.customer.io
+  description: App / Transactional API (EU region)
+- url: https://cdp.customer.io
+  description: Pipelines / Data Pipelines CDP API (US region)
+- url: https://cdp-eu.customer.io
+  description: Pipelines / Data Pipelines CDP API (EU region)
+security:
+- basicAuth: []
+- bearerAuth: []
+tags:
+- name: Campaigns
+  description: App API - read campaigns, their metrics, and actions.
+paths:
+  /v1/campaigns:
+    get:
+      operationId: listCampaigns
+      tags:
+      - Campaigns
+      summary: List campaigns
+      responses:
+        '200':
+          description: A list of campaigns.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+  /v1/campaigns/{campaign_id}:
+    get:
+      operationId: getCampaign
+      tags:
+      - Campaigns
+      summary: Get a campaign
+      parameters:
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: The campaign.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+  /v1/campaigns/{campaign_id}/metrics:
+    get:
+      operationId: getCampaignMetrics
+      tags:
+      - Campaigns
+      summary: Get campaign metrics
+      parameters:
+      - name: campaign_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Campaign metrics.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - bearerAuth: []
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed or credentials missing.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            error:
+              type: string
+            errors:
+              type: array
+              items:
+                type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Track API auth. Base-64 encode site_id:api_key and pass it in the Authorization header (Basic ...).
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: App API and Pipelines API auth. Pass the App API key (or Pipelines source write key) as a Bearer token in the Authorization header.
