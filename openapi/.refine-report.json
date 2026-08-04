@@ -1,0 +1,38 @@
+{
+  "provider": "customerio",
+  "sources": [
+    "customerio-broadcasts-api-openapi.yml",
+    "customerio-campaigns-api-openapi.yml",
+    "customerio-collections-api-openapi.yml",
+    "customerio-customers-api-openapi.yml",
+    "customerio-devices-api-openapi.yml",
+    "customerio-events-api-openapi.yml",
+    "customerio-exports-api-openapi.yml",
+    "customerio-messages-api-openapi.yml",
+    "customerio-people-api-openapi.yml",
+    "customerio-pipelines-api-openapi.yml",
+    "customerio-segments-api-openapi.yml",
+    "customerio-track-v2-api-openapi.yml",
+    "customerio-transactional-api-openapi.yml"
+  ],
+  "outputs": [
+    "customerio-broadcasts-api-openapi.yml",
+    "customerio-campaigns-api-openapi.yml",
+    "customerio-collections-api-openapi.yml",
+    "customerio-customers-api-openapi.yml",
+    "customerio-devices-api-openapi.yml",
+    "customerio-events-api-openapi.yml",
+    "customerio-exports-api-openapi.yml",
+    "customerio-messages-api-openapi.yml",
+    "customerio-people-api-openapi.yml",
+    "customerio-pipelines-api-openapi.yml",
+    "customerio-segments-api-openapi.yml",
+    "customerio-track-v2-api-openapi.yml",
+    "customerio-transactional-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
